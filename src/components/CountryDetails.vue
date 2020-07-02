@@ -16,30 +16,44 @@
       </v-row>
     </v-container>
     
-    {{ countryDetail | json }}
-
+    <GraphicLine v-bind:date="countryDetail[0].date" v-bind:casesConfirmed="countryDetail[0].confirmed"></GraphicLine>
   </v-app>
 </template>
 
 <script>
 import axios from "axios";
+import GraphicLine from "./GraphicLine.vue"
 
 export default {
+  components: {
+    GraphicLine
+  },
   props: ["country"],
   data() {
     return {
       countryDetail: []
-    };
-  },
+  }
+},
   created () {
       this.$vuetify.theme.dark = true;
       axios({
         url: `https://api.covid19api.com/live/country/${this.country}`,
         method: "get",
       }).then( response => {
+        console.log(`get values confirmed per country `);
+
         const query = response.data;
-        this.countryDetail = query;
-        console.log(query);
+        let confirmedInformations = {
+          date: [],
+          confirmed: []
+        };
+
+        query.forEach(value => {
+          const formatedDate = value.Date.split('T')[0];
+          confirmedInformations.date.push(formatedDate);
+          confirmedInformations.confirmed.push(value.Confirmed);
+        });
+        this.countryDetail.push(confirmedInformations);
       })
     },
 };
