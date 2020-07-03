@@ -10,14 +10,13 @@
     ],
     data () {
       return {
-        gradient: null,
         datacollection: {
           //Data to be represented on x-axis
           labels: this.date,
           datasets: [
             {
               label: 'Casos Confirmados',
-              backgroundColor:" #05CBE1",
+              backgroundColor: "#05CBE1",
               borderColor: "#248EA6",
               pointBackgroundColor: 'white',
               borderWidth: 2,
@@ -32,20 +31,22 @@
           scales: {
             yAxes: [{
               ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                label: false
               },
               gridLines: {
-                display: true
+                display: false
               }
             }],
             xAxes: [ {
               gridLines: {
                 display: true
-              }
+              },
+              display: false
             }]
           },
           legend: {
-            display: true
+            display: false
           },
           responsive: true,
           maintainAspectRatio: false
@@ -53,12 +54,6 @@
       }
     },
     mounted () {
-      this.gradient = this.$refs.canvas.getContext('2d').createLinearGradient(0, 0, 0, 450)
-
-      this.gradient.addColorStop(0, "rgba(255, 0,0, 0.5)");
-      this.gradient.addColorStop(0.5, "rgba(255, 0, 0, 0.25)");
-      this.gradient.addColorStop(1, "rgba(255, 0, 0, 0)");
-
       //renderChart function renders the chart with the datacollection and options object.
       console.log(`start plot graphic whit data `);
       this.renderChart(this.datacollection, this.options)
